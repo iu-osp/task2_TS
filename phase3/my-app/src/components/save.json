@@ -1,0 +1,9 @@
+{
+  "tasks": [
+    {
+      "description": "Dishes",
+      "status": "pending",
+      "priority": 100
+    }
+  ]
+}
