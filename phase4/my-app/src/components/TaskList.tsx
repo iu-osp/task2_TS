@@ -5,27 +5,16 @@ import { TaskItem } from './TaskItem';
 import { AddTask } from './AddTask';
 import { DeleteTask } from './DeleteTask';
 
-type Props = {
-    proptasks:Task[];
-}
+import { useAtomValue, useSetAtom, useAtom } from 'jotai';
+import { tasksGlobal, filterGlobal } from '../atoms/atoms';
+import { Link} from 'react-router';
 
-export const TaskList:FC<Props> = ({proptasks}) => {
 
-    const [tasks,setTasks] = useLocalStorage<Task[]>('tasks',proptasks);
-    const [filter,setFilter] = useState('');
 
-    // useEffect(() => {
-    //     setTasks(proptasks);
-    // }, [proptasks]);
-
-    const handleAdd = (task:Task) =>{
-        setTasks((cur : Task[]) => [...cur,task]);
-    }
-
-    const handleDelete = (id:number) =>{
-        setTasks((cur : Task[]) => cur.filter((element,i) => i!=id));
-    }
-
+export const TaskList:FC = () => {
+    
+    const tasks = useAtomValue(tasksGlobal);
+    const [filter, setFilter] = useAtom(filterGlobal);
 
 
     return(
@@ -34,18 +23,20 @@ export const TaskList:FC<Props> = ({proptasks}) => {
         {
             filter=='' ?
                 tasks.map((task : Task,index:number) =>(
-                    <tr><td>{index+1}</td><TaskItem task = {task}/></tr>
+                    <tr><td>{index+1}</td><TaskItem task = {task} id = {index}/></tr>
     
                 )) :
                 tasks.map((task : Task,index:number) =>(
                     task.status==filter?
-                    <tr><td>{index+1}</td><TaskItem task = {task}/></tr>
+                    <tr><td>{index+1}</td><TaskItem task = {task} id = {index}/></tr>
                     : <></>
                 ))
         }
         </tbody></table>
-        <AddTask handleAdd={handleAdd}/>
-        <DeleteTask handleDelete={handleDelete}/>
+        <Link to="/addT">ADD</Link><br></br>
+        <Link to="/deleteT">DELETE</Link>
+        {/* <AddTask/>
+        <DeleteTask/> */}
         <form>
             <input type='text'onChange={(f)=>setFilter(f.target.value)} placeholder='filter by status'/>
         </form>

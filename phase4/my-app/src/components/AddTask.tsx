@@ -1,21 +1,24 @@
 import { FC, useState } from 'react';
 import { Task, Status } from '../types/types';
+import { tasksGlobal } from '../atoms/atoms';
+import { useAtom } from 'jotai';
+import { Link, useNavigate } from 'react-router';
 
-type Props ={
-    handleAdd: (task:Task) => void;
-};
-
-
-export const AddTask: FC<Props> = ({handleAdd}) =>{
+export const AddTask: FC = () =>{
     const [description,setDesc] = useState('');
     const [status,setStatus] = useState('pending');
     const [priority,setPriority] = useState(0);
+    const to = useNavigate();
+
+    const [list, setList] = useAtom(tasksGlobal);
 
     const handleSubmit =(e:React.FormEvent) =>{
         e.preventDefault();
         const task:Task = {description,status,priority};
-        handleAdd(task);
+        setList([...list,task]);
+        to('/');
     }
+
     return (
         <form>
             <input type='text'onChange={(f)=>setDesc(f.target.value)}/>
