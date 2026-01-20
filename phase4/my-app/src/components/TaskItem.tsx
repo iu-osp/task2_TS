@@ -4,15 +4,14 @@ import { useNavigate } from 'react-router';
 
 type Props = {
     task: Task;
-    id: number;
 }
 
-export const TaskItem:FC<Props> = ({task,id}) => {
+export const TaskItem:FC<Props> = ({task}) => {
     const to = useNavigate();
 
     return(
-        <>
-            <td onClick={() => {to(`/${id}`)}}>{task.description}</td><td>{task.status}</td><td>{task.priority}</td>
-        </>
+        <div onClick={() => {to(`/${task.id}`)}}>
+            <td>{task.id}</td><td >{task.description}</td><td>{task.status}</td><td>{task.priority}</td>
+        </div>
     );
 };

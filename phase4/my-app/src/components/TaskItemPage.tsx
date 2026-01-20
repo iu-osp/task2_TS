@@ -12,8 +12,8 @@ export const TaskItemPage:FC = () => {
 
     return(
         <>{tasks.map((task : Task,index:number) =>(
-            index.toString() == params.id ?
-                            <tr><td>{index+1}</td><TaskItem task = {task} id = {index}/></tr>
+            task.id.toString() == params.id ?
+                            <tr><TaskItem task = {task}/></tr>
                             : <></>
                         ))}
         </>

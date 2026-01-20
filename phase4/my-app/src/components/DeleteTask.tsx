@@ -13,9 +13,13 @@ export const DeleteTask: FC = () =>{
 
     const handleSubmit =(e:React.FormEvent) =>{
         e.preventDefault();
-        setList(list.filter((element,i) => i!=id-1));
+        const updatedList = list.filter((element, i) => i !== id);
+        setList(list.filter((element) => element.id!==id));
+        fetch('http://127.0.0.1:8000/task/'+id, {
+            method: 'DELETE',});
         to('/');
     }
+    
     return (
         <form>
             <input type='number'onChange={(f)=>setId(Number(f.target.value))}/>

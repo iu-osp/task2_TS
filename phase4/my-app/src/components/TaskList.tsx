@@ -9,12 +9,26 @@ import { useAtomValue, useSetAtom, useAtom } from 'jotai';
 import { tasksGlobal, filterGlobal } from '../atoms/atoms';
 import { Link} from 'react-router';
 
+// const tmp = fetch('http://127.0.0.1:8000/').then((response)=>response.json())
+//             .then((tasksData) =>{
+//                 setTasks(tasksData);
+//             });
 
 
 export const TaskList:FC = () => {
     
-    const tasks = useAtomValue(tasksGlobal);
+    const [tasks, setTasks] = useAtom(tasksGlobal);
     const [filter, setFilter] = useAtom(filterGlobal);
+
+    useEffect(() =>{
+        const getTasks = async () =>{
+            const response = await fetch('http://127.0.0.1:8000/');
+            const tasksData = await response.json();
+            setTasks(tasksData);
+            
+        }
+    }
+)
 
 
     return(
@@ -22,13 +36,13 @@ export const TaskList:FC = () => {
         <table><thead><tr><th>ID</th><th>Description</th><th>Status</th><th>Priority</th></tr></thead><tbody>
         {
             filter=='' ?
-                tasks.map((task : Task,index:number) =>(
-                    <tr><td>{index+1}</td><TaskItem task = {task} id = {index}/></tr>
+                tasks.map((task : Task) =>(
+                    <tr><TaskItem task = {task}/></tr>
     
                 )) :
-                tasks.map((task : Task,index:number) =>(
+                tasks.map((task : Task) =>(
                     task.status==filter?
-                    <tr><td>{index+1}</td><TaskItem task = {task} id = {index}/></tr>
+                    <tr><TaskItem task = {task}/></tr>
                     : <></>
                 ))
         }
